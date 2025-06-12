@@ -85,8 +85,7 @@ function dispatch(action) {
   listeners.forEach((listener) => listener(memoryState))
 }
 
-// Core toast function
-function toast(props) {
+ function toast(props) {
   const id = genId()
 
   const update = (newProps) =>
@@ -112,8 +111,7 @@ function toast(props) {
   return { id, dismiss, update }
 }
 
-// React hook to access toasts in components
-function useToast() {
+ function useToast() {
   const [state, setState] = useState(memoryState)
 
   useEffect(() => {

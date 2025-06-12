@@ -5,10 +5,8 @@ import { booksApi } from "../lib/api"
 const BOOKS_PER_PAGE = 10
 const CACHE_KEY = "books"
 
-// Custom fetcher that only fetches when explicitly called
-const fetcher = async (...args) => {
-  // This will be called by SWR
-  return await booksApi.getAll(...args)
+ const fetcher = async (...args) => {
+   return await booksApi.getAll(...args)
 }
 
 export function useBooks(filters) {
@@ -20,7 +18,7 @@ export function useBooks(filters) {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     refreshInterval: 0,
-    dedupingInterval: 60000, // Only refetch at most once per minute
+    dedupingInterval: 60000,  
   })
 
   const filteredBooks =
@@ -57,8 +55,7 @@ export function useBookMutations() {
       const newBook = await booksApi.create(book)
       console.log("Book created successfully:", newBook)
 
-      // Update cache manually
-      await globalMutate(CACHE_KEY, async (currentBooks) => {
+       await globalMutate(CACHE_KEY, async (currentBooks) => {
         return currentBooks ? [...currentBooks, newBook] : [newBook]
       })
 
@@ -75,8 +72,7 @@ export function useBookMutations() {
       await booksApi.update(id, bookData)
       console.log("Book updated successfully")
 
-      // Update cache manually
-      await globalMutate(CACHE_KEY, async (currentBooks) => {
+       await globalMutate(CACHE_KEY, async (currentBooks) => {
         return currentBooks?.map((book) => (book._id === id ? { ...book, ...bookData } : book)) || []
       })
 
@@ -93,8 +89,7 @@ export function useBookMutations() {
       await booksApi.delete(id)
       console.log("Book deleted successfully")
 
-      // Update cache manually
-      await globalMutate(CACHE_KEY, async (currentBooks) => {
+       await globalMutate(CACHE_KEY, async (currentBooks) => {
         return currentBooks?.filter((book) => book._id !== id) || []
       })
 
@@ -108,8 +103,7 @@ export function useBookMutations() {
   return { createBook, updateBook, deleteBook }
 }
 
-// Helper function to force refresh all book data - only when explicitly called
-export function useForceRefresh() {
+ export function useForceRefresh() {
   return () => {
     console.log("Force refreshing book data...")
     globalMutate(CACHE_KEY)

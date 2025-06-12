@@ -31,8 +31,7 @@ export function BookTable({ books, isLoading, onEdit }) {
 
       if (result.success) {
         showToast("Book deleted successfully", "success")
-        // Force refresh to ensure UI is updated
-        setTimeout(() => {
+         setTimeout(() => {
           forceRefresh()
         }, 100)
       } else {

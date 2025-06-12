@@ -11,19 +11,16 @@ export function showToast(message, type = "info") {
   toasts = [...toasts, toast]
   listeners.forEach((listener) => listener(toasts))
   
-  // Trigger animation after a small delay
-  setTimeout(() => {
+   setTimeout(() => {
     toasts = toasts.map(t => t.id === id ? { ...t, isVisible: true } : t)
     listeners.forEach((listener) => listener(toasts))
   }, 50)
   
-  // Remove toast after 5 seconds
-  setTimeout(() => {
+   setTimeout(() => {
     toasts = toasts.map(t => t.id === id ? { ...t, isVisible: false } : t)
     listeners.forEach((listener) => listener(toasts))
     
-    // Actually remove from array after animation completes
-    setTimeout(() => {
+     setTimeout(() => {
       toasts = toasts.filter((t) => t.id !== id)
       listeners.forEach((listener) => listener(toasts))
     }, 300)
@@ -123,8 +120,7 @@ export function Toaster() {
   )
 }
 
-// Demo component to test the toasts
-export default function ToastDemo() {
+ export default function ToastDemo() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-md mx-auto space-y-4">

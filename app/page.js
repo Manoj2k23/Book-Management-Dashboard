@@ -27,8 +27,7 @@ export default function Dashboard() {
     status: statusFilter,
   })
 
-  // Force component re-render when needed
-  const triggerRefresh = () => {
+   const triggerRefresh = () => {
     setRefreshKey((prev) => prev + 1)
     forceRefresh()
   }
@@ -46,7 +45,7 @@ export default function Dashboard() {
   const handleCloseModal = () => {
     setIsModalOpen(false)
     setEditingBook(null)
-    // Trigger refresh when modal closes
+     
     triggerRefresh()
   }
 
@@ -83,7 +82,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6" key={refreshKey}>
-      {/* Header with Add Button */}
+      {/* Header  */}
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-bold text-blue-950">Books Dashboard</h2>
@@ -110,7 +109,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Cards */}
       <StatsCards books={allBooks} isLoading={isLoading} />
 
       {/* Search and Filters */}

@@ -9,15 +9,15 @@ A responsive book management dashboard built with React.js and Next.js. It enabl
 
 ## ✨ Features
 
-- 📖 List books in a grid or table with pagination
-- 🔍 Search books by title or author
-- 🎯 Filter books by genre or status
-- ➕ Add/Edit book with form validations
-- ❌ Delete book with confirmation popup
-- 🛠 CRUD operations with toast notifications
-- 🚥 Loading spinners during API calls
-- ⚛️ State management with Redux
-- 🔁 Data fetching with SWR
+-  List books in a grid or table with pagination
+-  Search books by title or author
+-  Filter books by genre or status
+-  Add/Edit book with form validations
+-  Delete book with confirmation popup
+-  CRUD operations with toast notifications
+-  Loading spinners during API calls
+-  State management with Redux
+-  Data fetching with SWR
 
 ## 🧰 Tech Stack
 

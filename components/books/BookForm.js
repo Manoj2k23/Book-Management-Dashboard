@@ -60,8 +60,7 @@ export function BookForm({ book, onClose }) {
 
         if (result.success) {
           showToast("Book updated successfully", "success")
-          // Force refresh to ensure UI is updated
-          setTimeout(() => {
+           setTimeout(() => {
             forceRefresh()
           }, 100)
           onClose()
@@ -75,8 +74,7 @@ export function BookForm({ book, onClose }) {
         if (result.success) {
           showToast("Book created successfully", "success")
           reset()
-          // Force refresh to ensure UI is updated
-          setTimeout(() => {
+           setTimeout(() => {
             forceRefresh()
           }, 100)
           onClose()

@@ -5,7 +5,10 @@ import { BookTableSkeleton } from "./BookTableSkeleton"
 import { ConfirmDialog } from "../../components/ui/ConfirmDialog"
 import { useBookMutations,useForceRefresh } from "../../hooks/useBooks"
 import { showToast } from "../../components/ui/toast"
+
 export function BookTable({ books, isLoading, onEdit }) {
+  
+
   const [deleteConfirm, setDeleteConfirm] = useState({
     isOpen: false,
     book: null,
@@ -31,7 +34,8 @@ export function BookTable({ books, isLoading, onEdit }) {
 
       if (result.success) {
         showToast("Book deleted successfully", "success")
-         setTimeout(() => {
+        // Force refresh to ensure UI is updated
+        setTimeout(() => {
           forceRefresh()
         }, 100)
       } else {
@@ -56,9 +60,9 @@ export function BookTable({ books, isLoading, onEdit }) {
 
   if (books.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="text-gray-500 text-lg">No books found</div>
-        <p className="text-sm text-gray-400 mt-2">Add some books to get started</p>
+      <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="text-gray-500 text-lg mb-2">No books found on this page</div>
+        <p className="text-sm text-gray-400">Try going back to page 1 or adjusting your search filters</p>
       </div>
     )
   }

@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect,useCallback } from "react"
+
 
 const genres = [
   "Fiction",
@@ -18,16 +19,48 @@ const genres = [
 export function SearchAndFilters({ searchTerm, genreFilter, statusFilter, onSearch, onGenreFilter, onStatusFilter }) {
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm)
 
-   useEffect(() => {
-    const timer = setTimeout(() => {
-      onSearch(localSearchTerm)
-    }, 300)
+   const debouncedSearch = useCallback(
+    (term) => {
+       onSearch(term)
+    },
+    [onSearch],
+  )
 
-    return () => clearTimeout(timer)
-  }, [localSearchTerm, onSearch])
+   useEffect(() => {
+     if (localSearchTerm !== searchTerm) {
+       const timer = setTimeout(() => {
+        debouncedSearch(localSearchTerm)
+      }, 300)
+
+      return () => {
+         clearTimeout(timer)
+      }
+    }
+  }, [localSearchTerm, searchTerm, debouncedSearch])
+
+   useEffect(() => {
+    if (searchTerm !== localSearchTerm) {
+       setLocalSearchTerm(searchTerm)
+    }
+  }, [searchTerm, localSearchTerm])
+
+  const handleGenreChange = (e) => {
+     onGenreFilter(e.target.value)
+  }
+
+  const handleStatusChange = (e) => {
+     onStatusFilter(e.target.value)
+  }
+
+  const handleClearFilters = () => {
+     setLocalSearchTerm("")
+    onSearch("")
+    onGenreFilter("")
+    onStatusFilter("")
+  }
 
   return (
-    <div className="   space-y-4">
+    <div className=" p-6 space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Search */}
         <div>
@@ -36,9 +69,11 @@ export function SearchAndFilters({ searchTerm, genreFilter, statusFilter, onSear
             <input
               id="search"
               type="text"
-              placeholder="Search by Title or Author..."
+              placeholder="Search books..."
               value={localSearchTerm}
-              onChange={(e) => setLocalSearchTerm(e.target.value)}
+              onChange={(e) => {
+                 setLocalSearchTerm(e.target.value)
+              }}
               className="input-field pl-10"
             />
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -56,14 +91,9 @@ export function SearchAndFilters({ searchTerm, genreFilter, statusFilter, onSear
 
         {/* Genre Filter */}
         <div>
-         
-          <select
-            id="genre-filter"
-            value={genreFilter}
-            onChange={(e) => onGenreFilter(e.target.value)}
-            className="select-field"
-          >
-            <option value="">All Genres</option>
+          
+          <select id="genre-filter" value={genreFilter} onChange={handleGenreChange} className="select-field ">
+            <option className="" value="">All Genres</option>
             {genres.map((genre) => (
               <option key={genre} value={genre}>
                 {genre}
@@ -74,13 +104,8 @@ export function SearchAndFilters({ searchTerm, genreFilter, statusFilter, onSear
 
         {/* Status Filter */}
         <div>
-          
-          <select
-            id="status-filter"
-            value={statusFilter}
-            onChange={(e) => onStatusFilter(e.target.value)}
-            className="select-field"
-          >
+         
+          <select id="status-filter" value={statusFilter} onChange={handleStatusChange} className="select-field">
             <option value="">All Status</option>
             <option value="Available">Available</option>
             <option value="Issued">Issued</option>
@@ -91,15 +116,7 @@ export function SearchAndFilters({ searchTerm, genreFilter, statusFilter, onSear
       {/* Clear Filters */}
       {(searchTerm || genreFilter || statusFilter) && (
         <div className="flex justify-end">
-          <button
-            onClick={() => {
-              setLocalSearchTerm("")
-              onSearch("")
-              onGenreFilter("")
-              onStatusFilter("")
-            }}
-            className="text-sm text-blue-600 hover:text-blue-800"
-          >
+          <button onClick={handleClearFilters} className="text-sm text-blue-600 hover:text-blue-800">
             Clear all filters
           </button>
         </div>

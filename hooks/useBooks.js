@@ -1,12 +1,11 @@
 import useSWR, { mutate as globalMutate } from "swr"
 import { booksApi } from "../lib/api"
  
-
 const BOOKS_PER_PAGE = 10
 const CACHE_KEY = "books"
 
  const fetcher = async (...args) => {
-   return await booksApi.getAll(...args)
+  return await booksApi.getAll(...args)
 }
 
 export function useBooks(filters) {
@@ -14,14 +13,16 @@ export function useBooks(filters) {
     data: allBooks,
     error,
     mutate,
+    isLoading: swrLoading,
   } = useSWR(CACHE_KEY, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     refreshInterval: 0,
-    dedupingInterval: 60000,  
+    dedupingInterval: 60000,
   })
+ 
 
-  const filteredBooks =
+   const filteredBooks =
     allBooks?.filter((book) => {
       const matchesSearch =
         !filters.search ||
@@ -34,16 +35,21 @@ export function useBooks(filters) {
       return matchesSearch && matchesGenre && matchesStatus
     }) || []
 
+ 
+  // Calculate pagination
   const totalPages = Math.ceil(filteredBooks.length / BOOKS_PER_PAGE)
   const startIndex = (filters.page - 1) * BOOKS_PER_PAGE
-  const books = filteredBooks.slice(startIndex, startIndex + BOOKS_PER_PAGE)
+  const endIndex = startIndex + BOOKS_PER_PAGE
+  const books = filteredBooks.slice(startIndex, endIndex)
+ 
+ 
 
   return {
     books,
-    allBooks,
-    isLoading: !allBooks && !error,
+    allBooks: allBooks || [],
+    isLoading: swrLoading || (!allBooks && !error),
     error: error?.message,
-    totalPages,
+    totalPages: Math.max(1, totalPages),  
     mutate,
   }
 }
@@ -105,7 +111,6 @@ export function useBookMutations() {
 
  export function useForceRefresh() {
   return () => {
-    console.log("Force refreshing book data...")
-    globalMutate(CACHE_KEY)
+     globalMutate(CACHE_KEY)
   }
 }

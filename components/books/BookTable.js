@@ -61,9 +61,8 @@ export function BookTable({ books, isLoading, onEdit }) {
   if (books.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow p-12 text-center">
-        <div className="text-gray-500 text-lg mb-2">No books found on this page</div>
-        <p className="text-sm text-gray-400">Try going back to page 1 or adjusting your search filters</p>
-      </div>
+        <div className="text-gray-500 text-lg mb-2">No books found </div>
+       </div>
     )
   }
 

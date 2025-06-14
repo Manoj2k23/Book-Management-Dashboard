@@ -66,7 +66,7 @@ export default function Dashboard() {
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-600 text-lg mb-4">Error loading books: {error}</div>
+        <div className="text-red-600 text-lg mb-4">crudcrud reached maximum limit change API key: {error}</div>
         <button onClick={forceRefresh} className="btn-primary">
           Retry
         </button>
